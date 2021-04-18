@@ -9,6 +9,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.3",
     "bootstrap": "^4.6.0",
+    "element-ui": "^2.15.1",
     "gridsome": "^0.7.0"
   }
 }
