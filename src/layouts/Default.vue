@@ -43,7 +43,7 @@
       <h1 class="project-name">{{ blogTitle }}</h1>
       <h2 class="project-tagline">{{ blogDescribe }}</h2>
       <a
-        :href="'https://github.com/' + githubUsername"
+        :href="'https://github.com/' + user.login"
         class="btn"
         target="_blank"
         >GitHub主页</a
@@ -158,11 +158,11 @@
           </el-col>
           <el-col :span="4" style="text-align: right">
             <div style="font-size: 20px; color: #606266; margin-top: 5px">
-              <b>{{ githubUsername }}</b>
+              <b>{{ user.login }}</b>
             </div>
             <div style="color: #606266">
               <i class="el-icon-location"></i>&nbsp;{{
-                location ? location : "未填写地址"
+                user.location ? user.location : "未填写地址"
               }}
               <br />
             </div>
@@ -170,7 +170,7 @@
           <el-col :span="2" style="text-align: center">
             <img
               v-popover:bigAvatar
-              :src="avatarUrl"
+              :src="user.avatar_url"
               style="
                 margin-top: 4px;
                 margin-right: 10px;
@@ -183,15 +183,15 @@
             <el-popover
               ref="bigAvatar"
               placement="top-start"
-              :title="githubUsername"
+              :title="user.login"
               width="200"
               trigger="hover"
             >
-              <i class="el-icon-star-on"></i>&emsp;{{ name }}
+              <i class="el-icon-star-on"></i>&emsp;{{ user.login }}
               <br />
-              <i class="el-icon-location"></i>&emsp;{{ location }}
+              <i class="el-icon-location"></i>&emsp;{{ user.location }}
               <br />
-              <img :src="avatarUrl" style="width: 200px; height: 200px" />
+              <img :src="user.avatar_url" style="width: 200px; height: 200px" />
             </el-popover>
           </el-col>
         </el-row>
@@ -214,6 +214,20 @@
   </div>
 </template>
 
+<static-query>
+query {
+  users: allUserInfo {
+    edges {
+      node {
+        login
+        avatar_url
+        location
+      }
+    }
+  }
+}
+</static-query>
+
 <script>
 import AppMain from "./components/AppMain.vue";
 import Foot from "./components/Foot.vue";
@@ -227,10 +241,8 @@ export default {
   },
   data() {
     return {
-      githubUsername: "githubUsername",
-      location: "",
+      
       name: "name",
-      avatarUrl: "avatarUrl",
       backgroundColorLeft: "#155799",
       backgroundColorRight: "#159957",
       fontColor: "#ffffff",
@@ -253,6 +265,12 @@ export default {
       },
     };
   },
+  computed: {
+    user: function() {
+      console.log('user',this.$static.users.edges[0].node)
+      return this.$static.users.edges[0].node
+    },
+  },
   mounted() {
     let width = window.innerWidth;
     for (let i = 0; i < 12; i++) {
@@ -267,6 +285,7 @@ export default {
       this.randomIcon.push(temp);
     }
   },
+
   methods: {
     full() {
       if (!this.fullButton.full) {
@@ -282,7 +301,7 @@ export default {
       this.topbar.active = this.topbar.active == "" ? " " : "";
       switch (index) {
         case "#githubHome":
-          window.open("https://github.com/" + this.githubUsername);
+          window.open("https://github.com/" + this.user.login);
           break;
         case "#blog":
           if (this.blog) {

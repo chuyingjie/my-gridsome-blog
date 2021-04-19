@@ -43,6 +43,7 @@
   </Layout>
 </template>
 
+
 <script>
 export default {
   name: "NewMainPage",
