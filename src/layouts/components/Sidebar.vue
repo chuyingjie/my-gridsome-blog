@@ -1,23 +1,21 @@
 <template>
   <div>
-    <!-- <el-card shadow="never">
+    <el-card shadow="never">
       <el-menu :default-active="active" @select="onSelect">
         <el-menu-item
-          v-for="item in constantRouterMap"
-          v-if="
-            item.meta &&
-            item.meta.type == 'user' &&
-            (token || !item.meta.LoginRequired) &&
-            (!mini || !item.meta.mini)
-          "
+          v-for="item in sideBarRouterMap"
           :key="item.path"
-          :index="item.path"
         >
           <i :class="item.meta.icon"></i>
-          <span slot="title">{{ item.meta.title }}</span>
+          <g-link :to="item.redirect || item.path">
+            {{ item.meta.title }}
+          </g-link>
         </el-menu-item>
       </el-menu>
-    </el-card> -->
+      <!-- <g-link v-for="item in sideBarRouterMap" :to="item.path">
+        {{ item.meta.title }}
+      </g-link> -->
+    </el-card>
 
     <el-card shadow="never" style="margin-top: 20px; text-align: center">
       <div
@@ -49,12 +47,148 @@
 </template>
 
 <script>
+const sideBarRouterMap = [
+  {
+    path: "/new",
+    redirect: "/new/main",
+    meta: {
+      type: "user",
+      icon: "el-icon-star-off",
+      title: "最新动态",
+    },
+    children: [
+      {
+        path: "main",
+        meta: { title: "最新动态" },
+      },
+    ],
+  },
+  {
+    path: "/social",
+    redirect: "/social/main",
+    meta: {
+      type: "user",
+      icon: "el-icon-mobile-phone",
+      title: "社交圈",
+    },
+    children: [
+      {
+        path: "main",
+        meta: { title: "社交圈" },
+      },
+      {
+        path: "details/:name",
+        meta: { title: "用户资料" },
+      },
+    ],
+  },
+  {
+    path: "/blog",
+    redirect: "/blog/main",
+    meta: {
+      type: "user",
+      icon: "el-icon-edit-outline",
+      title: "博客列表",
+    },
+    children: [
+      {
+        path: "main",
+        meta: { title: "博客列表" },
+      },
+      {
+        path: "add",
+        meta: { title: "发表博客" },
+      },
+      {
+        path: "edit/:id",
+        meta: { title: "编辑博客" },
+      },
+      {
+        path: "details/:id",
+        meta: { title: "博客详情" },
+      },
+    ],
+  },
+  {
+    path: "/project",
+    redirect: "/project/main",
+    meta: {
+      type: "user",
+      icon: "el-icon-service",
+      title: "开源项目",
+    },
+    children: [
+      {
+        path: "main",
+        meta: { title: "项目列表" },
+      },
+      {
+        path: "details/:name",
+        meta: { title: "项目详情" },
+      },
+    ],
+  },
+  {
+    path: "/helper",
+    redirect: "/helper/main",
+    meta: {
+      type: "user",
+      icon: "el-icon-printer",
+      title: "使用帮助",
+      mini: true,
+    },
+    children: [
+      {
+        path: "main",
+        meta: { title: "使用帮助" },
+      },
+    ],
+  },
+  {
+    path: "/readme",
+    redirect: "/readme/main",
+    meta: {
+      type: "user",
+      icon: "el-icon-document",
+      title: "README.md",
+    },
+    children: [
+      {
+        path: "main",
+        meta: { title: "README.md" },
+      },
+    ],
+  },
+  {
+    path: "/configure",
+    redirect: "/configure/main",
+    meta: {
+      type: "user",
+      icon: "el-icon-setting",
+      title: "系统配置",
+      LoginRequired: true,
+    },
+    children: [
+      {
+        path: "main",
+        meta: { title: "系统配置" },
+      },
+    ],
+  },
+];
+
 export default {
   name: "Sidebar",
   data() {
     return {
       token: "",
+      active: "",
+      sideBarRouterMap,
+      mini: false,
     };
+  },
+  methods: {
+    onSelect() {},
   },
 };
 </script>
