@@ -7,20 +7,59 @@
 const axios = require('axios')
 const request = axios.create({
   baseURL: "https://api.github.com",
-  timeout: 15000
+  timeout: 150000
 })
+
+const githubUsername = 'chuyingjie'
 
 module.exports = function (api) {
   api.loadSource(async ({ addCollection }) => {
     // Use the Data Store API here: https://gridsome.org/docs/data-store-api/
-    const { data } = await request.get(`/users/chuyingjie`)
-    const collection = addCollection('UserInfo')
-    collection.addNode({
-      id: data.id,
-      login: data.login,
-      avatar_url: data.avatar_url,
-      location: data.location || '',
+    const requests=[
+      request.get(`/users/${githubUsername}`),
+      request.get(`/users/${githubUsername}/followers`),
+      request.get(`/users/${githubUsername}/following`),
+      request.get(`/users/${githubUsername}/repos`)
+    ]
+
+    const results = await Promise.all(requests)
+
+
+
+    // const { data } = await request.get(`/users/${githubUsername}`)
+    const { data: userInfo } = results[0]
+    const userInfoCollection = addCollection('UserInfo')
+    userInfoCollection.addNode({
+      id: userInfo.id,
+      login: userInfo.login,
+      avatar_url: userInfo.avatar_url,
+      location: userInfo.location || '',
     })
+
+    const { data: followers } = results[1]
+    const followerCollection = addCollection('Followers')
+
+    for (const follower of followers) {
+      followerCollection.addNode(follower)
+    }
+    
+    const { data: followings } = results[2]
+    const followingCollection = addCollection('Followings')
+
+    for (const following of followings) {
+      followingCollection.addNode(following)
+    }
+
+    const { data: projects } = results[3]
+    const projectCollection = addCollection('Project')
+
+    for (const project of projects) {
+      projectCollection.addNode(project)
+    }
+
+
+    // const { data } = await request.get(`/users/${githubUsername}/followers`)
+    // const { data } = await request.get(`/users/${githubUsername}/following`)
   })
 
   // api.loadSource(async actions => {

@@ -1,57 +1,62 @@
 <template>
   <Layout>
-    <h1>test</h1>
+    <div style="min-height: 600px">
+      <el-card shadow="never" style="min-height: 400px" v-if="blog.id">
+        <div slot="header">
+          <span>{{ blog.title }}</span>
+        </div>
+        <div style="font-size: 0.9rem; line-height: 1.5; color: #606c71">
+          发布 {{ blog.createTime }} <br />
+          更新 {{ blog.updateTime }}
+        </div>
+        <div
+          style="
+            font-size: 1.1rem;
+            line-height: 1.5;
+            color: #303133;
+            border-bottom: 1px solid #e4e7ed;
+            padding: 5px 0px 5px 0px;
+          "
+        >
+          <pre style="font-family: '微软雅黑'">{{ blog.description }}</pre>
+        </div>
+        <div
+          v-html="blog.content"
+          class="markdown-body"
+          style="padding-top: 20px"
+        ></div>
+      </el-card>
+      <el-card
+        shadow="never"
+        style="
+          margin-bottom: 20px;
+          padding: 20px 0px 20px 0px;
+          text-align: center;
+        "
+        v-if="!blog.id"
+      >
+        <font style="font-size: 30px; color: #dddddd">
+          <b>没有更新 ╮(๑•́ ₃•̀๑)╭</b>
+        </font>
+      </el-card>
+    </div>
   </Layout>
 </template>
 
+
 <script>
 export default {
-  name: "IndexPage",
+  name: "NewMainPage",
   data() {
     return {
-      projects: [
-        {
-          login: "GitHub-Laziji",
-          id: 30425217,
-          node_id: "MDQ6VXNlcjMwNDI1MjE3",
-          avatar_url: "https://avatars.githubusercontent.com/u/30425217?v=4",
-          gravatar_id: "",
-          url: "https://api.github.com/users/GitHub-Laziji",
-          html_url: "https://github.com/GitHub-Laziji",
-          followers_url: "https://api.github.com/users/GitHub-Laziji/followers",
-          following_url:
-            "https://api.github.com/users/GitHub-Laziji/following{/other_user}",
-          gists_url:
-            "https://api.github.com/users/GitHub-Laziji/gists{/gist_id}",
-          starred_url:
-            "https://api.github.com/users/GitHub-Laziji/starred{/owner}{/repo}",
-          subscriptions_url:
-            "https://api.github.com/users/GitHub-Laziji/subscriptions",
-          organizations_url: "https://api.github.com/users/GitHub-Laziji/orgs",
-          repos_url: "https://api.github.com/users/GitHub-Laziji/repos",
-          events_url:
-            "https://api.github.com/users/GitHub-Laziji/events{/privacy}",
-          received_events_url:
-            "https://api.github.com/users/GitHub-Laziji/received_events",
-          type: "User",
-          site_admin: false,
-          name: "辣子鸡",
-          company: null,
-          blog: "laboo.top",
-          location: "fuzhou",
-          email: null,
-          hireable: null,
-          bio: "                              (°ー°〃) ",
-          twitter_username: null,
-          public_repos: 30,
-          public_gists: 17,
-          followers: 155,
-          following: 18,
-          created_at: "2017-07-25T02:47:47Z",
-          updated_at: "2021-03-31T02:08:48Z",
-        },
-      ],
-      loading: false,
+      blog: {
+        id: "",
+        title: "",
+        content: "",
+        description: "",
+        createTime: "",
+        updateTime: "",
+      },
     };
   },
 };

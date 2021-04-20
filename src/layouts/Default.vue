@@ -49,7 +49,7 @@
         >GitHub主页</a
       >
       <a
-        href="https://github.com/GitHub-Laziji/vblog"
+        href="https://gitee.com/chu-yingjie/my-gridsome-site"
         class="btn"
         target="_blank"
         >博客源码</a

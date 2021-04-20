@@ -49,8 +49,7 @@
 <script>
 const sideBarRouterMap = [
   {
-    path: "/new",
-    redirect: "/new/main",
+    path: "/",
     meta: {
       type: "user",
       icon: "el-icon-star-off",

@@ -5,7 +5,7 @@
 // To restart press CTRL + C in terminal and run `gridsome develop`
 
 module.exports = {
-  siteName: 'Gridsome',
+  siteName: '我的博客',
   plugins: [
     // {
     //   use: '@gridsome/source-filesystem',
@@ -14,5 +14,8 @@ module.exports = {
     //     typeName: 'DocPage'
     //   }
     // }
-  ]
+  ],
+  templates: {
+    Followings: '/social/:id',
+  }
 }

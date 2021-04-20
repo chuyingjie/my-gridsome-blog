@@ -73,16 +73,16 @@
           </div>
         </el-tab-pane>
         <el-tab-pane
-          :label="'关注 ' + followingTotal"
+          :label="'关注 ' + $page.allFollowings.totalCount"
           name="following"
           style="padding: 5px"
         >
           <div>
-            <div v-if="following.list.length">
+            <div v-if="$page.allFollowings.totalCount">
               <el-row style="min-height: 200px">
                 <el-col
                   :span="8"
-                  v-for="(item, index) in following.list"
+                  v-for="(item, index) in $page.allFollowings.edges"
                   :key="'following' + index"
                   style="padding: 10px"
                 >
@@ -91,22 +91,22 @@
                     style="font-size: 13px; color: #606266; line-height: 20px"
                   >
                     <i class="el-icon-star-off"></i>&emsp;
-                    <a
-                      @click="$router.push(`/user/social/details/${item.name}`)"
+                    <g-link
+                      :to="`/social/${item.node.id}`"
                       style="text-decoration: none; cursor: pointer"
-                      >{{ item.name }}</a
+                      >{{ item.node.login }}</g-link
                     >
                     <br />
                     <i class="el-icon-message"></i>&emsp;
                     <a
-                      :href="item.htmlUrl"
+                      :href="item.node.html_url"
                       target="_blank"
                       style="text-decoration: none; cursor: pointer"
                       >TA的主页</a
                     >
                     <br />
                     <img
-                      :src="item.avatarUrl"
+                      :src="item.node.avatar_url"
                       style="width: 100%; border-radius: 5px; margin-top: 5px"
                     />
                   </el-card>
@@ -144,6 +144,28 @@
   </Layout>
 </template>
 
+<page-query>
+query {
+  allFollowings {
+    totalCount
+    pageInfo {
+      perPage
+      currentPage
+      totalPages
+    }
+    edges {
+      node {
+        id
+        login
+        avatar_url
+        html_url
+      }
+    }
+  }
+}
+
+</page-query>
+
 <script>
 export default {
   name: "SocialMainPage",
@@ -169,6 +191,10 @@ export default {
         list: [],
       },
     };
+  },
+  mounted() {
+    // const allFollowings = this.$page.allFollowings
+    // this.following.list = allFollowings.edges.
   },
   methods: {
     onSelect() {},
