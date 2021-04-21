@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <div style="min-height: 600px">
-      <el-card shadow="never" style="margin-bottom: 20px">
+      <!-- <el-card shadow="never" style="margin-bottom: 20px">
         <el-input
           placeholder="请输入关键字"
           v-model="searchKey"
@@ -23,7 +23,7 @@
           plain
           circle
         ></el-button>
-      </el-card>
+      </el-card> -->
 
       <div v-if="projects && projects.length > 0">
         <el-card
@@ -31,16 +31,12 @@
           v-for="(item, index) in projects"
           :key="'pro' + index"
           style="margin-bottom: 20px"
-          v-if="!item.hide"
         >
           <div slot="header">
             <el-row>
               <el-col :span="16">
                 <span>
-                  <a
-                    style="text-decoration: none; cursor: pointer"
-                    @click="goDetails(item.name)"
-                  >
+                  <a style="text-decoration: none; cursor: pointer">
                     <i class="el-icon-service"></i>&nbsp;&nbsp; {{ item.name }}
                   </a>
                 </span>
@@ -48,14 +44,14 @@
               <el-col :span="8">
                 <div style="text-align: right">
                   <el-button
-                    @click="goGithub(item.url)"
+                    @click="goGithub(item.html_url)"
                     style="padding: 3px 0"
                     type="text"
                     icon="el-icon-back"
                     >前往GitHub</el-button
                   >
                   <el-button
-                    @click="$share('/user/project/details/' + item.name)"
+                    @click="$share(item.html_url)"
                     style="padding: 3px 0"
                     type="text"
                     icon="el-icon-share"
@@ -84,7 +80,7 @@
               <el-col :span="16" style="padding-top: 5px">
                 <el-tooltip
                   effect="dark"
-                  :content="'star ' + item.stargazersCount"
+                  :content="'star ' + item.stargazers_count"
                   placement="bottom"
                 >
                   <i
@@ -92,35 +88,37 @@
                     style="margin: 0px 5px 0px 0px"
                   ></i>
                 </el-tooltip>
-                {{ item.stargazersCount }}
+                {{ item.stargazers_count }}
                 <el-tooltip
                   effect="dark"
-                  :content="'watch ' + item.watchersCount"
+                  :content="'watch ' + item.watchers"
                   placement="bottom"
                 >
                   <i class="el-icon-view" style="margin: 0px 5px 0px 15px"></i>
                 </el-tooltip>
-                {{ item.watchersCount }}
+                {{ item.watchers }}
                 <el-tooltip
                   effect="dark"
-                  :content="'fork ' + item.forksCount"
+                  :content="'fork ' + item.forks_count"
                   placement="bottom"
                 >
                   <i class="el-icon-bell" style="margin: 0px 5px 0px 15px"></i>
                 </el-tooltip>
-                {{ item.forksCount }}
+                {{ item.forks_count }}
               </el-col>
               <el-col :span="8" style="text-align: right">
                 <el-tag size="small" type="danger" v-if="item.license">{{
-                  item.license
+                  item.license.spdx_id
                 }}</el-tag>
-                <el-tag size="small" type="success">{{ item.language }}</el-tag>
+                <el-tag v-if="item.language" size="small" type="success">{{
+                  item.language
+                }}</el-tag>
               </el-col>
             </el-row>
           </div>
         </el-card>
         <div style="text-align: center">
-          <el-pagination
+          <!-- <el-pagination
             @current-change="list"
             background
             layout="prev, pager, next"
@@ -128,7 +126,8 @@
             :page-size="query.pageSize"
             :total="query.pageNumber * query.pageSize"
           >
-          </el-pagination>
+          </el-pagination> -->
+          <Pager :info="$page.allProject.pageInfo"></Pager>
         </div>
       </div>
 
@@ -149,9 +148,45 @@
   </Layout>
 </template>
 
+<page-query>
+query ($page: Int) {
+  allProject (perPage: 5, page: $page) @paginate {
+    totalCount
+    pageInfo {
+      totalPages
+      currentPage
+    }
+    edges {
+      node {
+        name
+        full_name
+        html_url
+        url
+        description
+        forks_count
+        language
+        watchers
+        stargazers_count
+        updated_at
+        license {
+          key
+          name
+          spdx_id
+        }
+      }
+    }
+  }
+}
+</page-query>
+
 <script>
+import { Pager } from "gridsome";
+
 export default {
   name: "ProjectMainPage",
+  components: {
+    Pager,
+  },
   data() {
     return {
       query: {
@@ -161,11 +196,20 @@ export default {
       },
       loading: false,
       searchKey: "",
-      projects: [],
     };
   },
   methods: {
     search() {},
+    goGithub(url) {
+      window.open(url);
+    },
+  },
+  computed: {
+    projects: function () {
+      return this.$page.allProject.edges.map((project) => {
+        return project.node;
+      });
+    },
   },
 };
 </script>

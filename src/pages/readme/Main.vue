@@ -2,7 +2,7 @@
   <Layout>
     <div style="min-height: 600px">
       <el-card shadow="never">
-        <div v-html="$markdown(text)" class="markdown-body" v-if="text"></div>
+        <div v-html="text" class="markdown-body" v-if="text"></div>
         <div
           style="
             min-height: 400px;
@@ -21,13 +21,30 @@
   </Layout>
 </template>
 
+<page-query>
+query {
+  allDocPage {
+    edges {
+      node {
+        title
+        content
+      }
+    }
+  }
+}
+</page-query>
+
 <script>
 export default {
   name: "ReadmeMainPage",
   data() {
     return {
-      text: "",
     };
+  },
+  computed: {
+    text: function() {
+      return this.$page.allDocPage.edges[0].node.content
+    }
   },
   methods: {},
 };

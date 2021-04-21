@@ -7,13 +7,13 @@
 module.exports = {
   siteName: '我的博客',
   plugins: [
-    // {
-    //   use: '@gridsome/source-filesystem',
-    //   options: {
-    //     path: 'docs/**/*.md',
-    //     typeName: 'DocPage'
-    //   }
-    // }
+    {
+      use: '@gridsome/source-filesystem',
+      options: {
+        path: 'README.md',
+        typeName: 'DocPage'
+      }
+    }
   ],
   templates: {
     Followings: '/social/:id',

@@ -19,6 +19,7 @@ module.exports = function (api) {
       request.get(`/users/${githubUsername}`),
       request.get(`/users/${githubUsername}/followers`),
       request.get(`/users/${githubUsername}/following`),
+      request.get(`/users/${githubUsername}/repos`),
       request.get(`/users/${githubUsername}/repos`)
     ]
 

@@ -2,15 +2,7 @@
   <div>
     <section
       class="page-header"
-      :style="
-        'background-image: linear-gradient(120deg, ' +
-        backgroundColorLeft +
-        ', ' +
-        backgroundColorRight +
-        ');color: ' +
-        fontColor +
-        ';'
-      "
+      :style="`background-image: linear-gradient(120deg, ${backgroundColorLeft},${backgroundColorRight});color:${fontColor};`"
     >
       <div style="position: absolute; top: 20px; right: 20px; z-index: 2">
         <el-tooltip
@@ -42,10 +34,7 @@
       </div>
       <h1 class="project-name">{{ blogTitle }}</h1>
       <h2 class="project-tagline">{{ blogDescribe }}</h2>
-      <a
-        :href="'https://github.com/' + user.login"
-        class="btn"
-        target="_blank"
+      <a :href="'https://github.com/' + user.login" class="btn" target="_blank"
         >GitHub主页</a
       >
       <a
@@ -241,14 +230,13 @@ export default {
   },
   data() {
     return {
-      
       name: "name",
       backgroundColorLeft: "#155799",
       backgroundColorRight: "#159957",
       fontColor: "#ffffff",
       randomIcon: [],
       blogTitle: "我的博客",
-      blogDescribe: "爱生活，爱分享",
+      blogDescribe: "gridsome搭建的一个静态博客",
       fullButton: {
         full: false,
       },
@@ -266,9 +254,9 @@ export default {
     };
   },
   computed: {
-    user: function() {
-      console.log('user',this.$static.users.edges[0].node)
-      return this.$static.users.edges[0].node
+    user: function () {
+      console.log("user", this.$static.users.edges[0].node);
+      return this.$static.users.edges[0].node;
     },
   },
   mounted() {
