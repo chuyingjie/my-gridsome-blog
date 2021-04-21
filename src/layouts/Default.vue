@@ -45,13 +45,7 @@
       >
     </section>
     <div
-      style="
-        position: relative;
-        z-index: 2;
-        margin: auto;
-        margin-top: -30px;
-        width: 64rem;
-      "
+      style="position: relative;z-index: 2;margin: auto;margin-top: -30px;width: 64rem;"
     >
       <el-card shadow="never" :body-style="{ padding: '0px' }">
         <el-row>
@@ -394,5 +388,9 @@ a {
   font-size: 12px !important;
   color: #586069 !important;
   word-wrap: break-word;
+}
+
+.el-menu.el-menu--horizontal {
+  border-bottom: none !important;
 }
 </style>
